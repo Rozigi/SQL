@@ -69,11 +69,12 @@ DROP TABLE IF EXISTS NobleBackup
 SELECT * INTO NobleBackup
 FROM Noble
 
+--Updating Noble Table
 UPDATE Noble
 SET Year = 2025
 WHERE Year = 1963
 
-
+--Fetching All Records
 SELECT *
 FROM NobleBackup
 SELECT [Year]

@@ -1,0 +1,188 @@
+
+-- =============================================
+-- Author:			Rekiat Ozigi
+-- Create date:		2024/10/03
+-- Description:		ASSIGNMENT - INTERVIEW QUESTION
+-- Version:			0.1
+-- Revision Date:	2024/10/03
+-- =============================================
+
+USE DEV
+
+
+DROP TABLE IF EXISTS PRSN 
+CREATE TABLE PRSN 
+(
+PRSN_IK INT NOT NULL,
+NAME VARCHAR (50) NULL,
+AGE VARCHAR (50) NULL,
+MRN_NB VARCHAR  (50) NULL
+)
+
+INSERT INTO PRSN (PRSN_IK, NAME, AGE, MRN_NB)
+VALUES	(1, 'Bob', '35', '111'),
+		(2, 'John', '25', '222'),
+		(3, 'Mary', '21', '333'),
+		(4, 'Bill', '28', '444'),
+		(5, 'Jack', '15', 'null'),
+		(6, 'Jack', '15', '666'),
+		(7, 'Anne', '25', '777')
+
+
+SELECT *
+FROM PRSN
+
+DROP TABLE IF EXISTS PRSN_PHN
+CREATE TABLE PRSN_PHN  
+(
+PRSN_IK INT NOT NULL,
+LNE_NB VARCHAR (50) NULL,
+USG_TYP VARCHAR (50) NULL,
+PHONE_NBR VARCHAR  (50) NULL
+)
+
+INSERT INTO PRSN_PHN (PRSN_IK, LNE_NB, USG_TYP, PHONE_NBR)
+VALUES	(1, '1', 'Home', '915-111-2222'),
+		(2, '1', 'Home', '415_222-3333'),
+		(2, '2', 'Work', '915-333-4444'),
+		(4, '1', 'Work', '915-444-5555'),
+		(4, '2', 'Null', '915-333-4444'),
+		(5, '1', 'Home', '915-555-6666'),
+		(5, '2', 'Null', '915-555-6666')
+
+SELECT *
+FROM PRSN_PHN
+
+DROP TABLE IF EXISTS PRSN_ADDR
+CREATE TABLE PRSN_ADDR  
+(
+PRSN_IK INT NOT NULL,
+LNE_NB VARCHAR (50) NULL,
+ADDR_TYP VARCHAR (50) NULL,
+ADDR VARCHAR(50) NULL
+)
+
+
+INSERT INTO PRSN_ADDR(PRSN_IK,LNE_NB,ADDR_TYP,ADDR) 
+VALUES	(1,'1','HOME','WALNUT CREEK'), 
+		(1,'2','WORK','SAN FRANCISCO'), 
+		(2,'1','HOME','OAKLAND'), 
+		(3,'1','WORK','DUBLIN'), 
+		(3,'2','NULL','SAN JOSE') 
+
+
+Select *
+From PRSN
+
+Select *
+From PRSN_PHN
+
+Select *
+From PRSN_ADDR
+
+
+SELECT Name, ADDR
+
+
+
+SELECT 
+P.NAME, 
+P.MRN_NB,
+PP.USG_TYP AS TYPE, 
+PP.PHONE_NBR, PA.ADDR
+FROM PRSN AS P 
+JOIN PRSN_PHN AS PP
+ON P.PRSN_IK = PP.PRSN_IK
+JOIN PRSN_ADDR AS PA
+ON PP.LNE_NB = PA.LNE_NB
+
+
+
+SELECT 
+P.NAME, 
+P.MRN_NB, 
+PP.USG_TYP AS TYPE, 
+COALESCE (PP.PHONE_NBR, 'N/A')AS Phone_Number,
+COALESCE (A.ADDR, 'N/A'),
+CASE 
+WHEN A.ADDR IS NOT NULL AND PP.PHONE_NBR IS NOT NULL THEN 'Member Has Both'
+WHEN A.ADDR IS NOT NULL AND PP.PHONE_NBR IS NULL THEN 'Member Has Address Only'
+WHEN A.ADDR IS NULL AND PP.PHONE_NBR IS NOT NULL THEN 'Member Has Phone Only'
+ELSE 'Member Has None' 
+END AS Comment 
+FROM PRSN P 
+LEFT JOIN PRSN_PHN PP 
+ON P.PRSN_IK = PP.PRSN_IK
+LEFT JOIN PRSN_ADDR A 
+ON P.PRSN_IK = A.PRSN_IK 
+ORDER BY P.PRSN_IK
+
+
+SELECT TOP 1*
+FROM
+(
+SELECT 
+P.NAME,
+P.AGE,
+PP.PHONE_NBR AS PHONE_NUMBER, 
+A.ADDR AS ADDRESS
+FROM PRSN AS P
+LEFT JOIN PRSN_PHN AS PP
+ON P.PRSN_IK = PP.PRSN_IK
+LEFT JOIN PRSN_ADDR AS A
+ON P.PRSN_IK = A.PRSN_IK
+GROUP BY AGE, NAME, ADDR, PHONE_NBR
+)v
+ORDER BY AGE DESC
+
+WITH OldestPerson AS
+(
+SELECT 
+P.PRSN_IK, 
+P.NAME, 
+P.AGE
+FROM PRSN P
+WHERE P.AGE = (SELECT MAX(AGE) FROM PRSN) 
+) 
+SELECT OP.NAME, 
+OP.AGE, 
+COALESCE(A.ADDR, 'N/A') AS Address, 
+COALESCE(PP.PHONE_NBR, 'N/A') AS Phone_Number
+FROM OldestPerson OP 
+LEFT JOIN PRSN_PHN PP 
+ON OP.PRSN_IK = PP.PRSN_IK 
+LEFT JOIN PRSN_ADDR A 
+ON OP.PRSN_IK = A.PRSN_IK
+ORDER BY OP.PRSN_IK
+
+--3-Write a query that return the phone number of the third youngest person(s) from the PRSN table (use analytic function if possible)
+SELECT 
+P.NAME,
+P.AGE,
+PP.USG_TYP,
+PP.PHONE_NBR
+FROM PRSN AS P
+LEFT JOIN PRSN_PHN AS PP
+ON P.PRSN_IK = PP.PRSN_IK
+WHERE AGE IN 
+(SELECT AGE
+'JOHN', 'ANNE')
+
+
+
+--4 Write a query that will return all person that has multiple addr or multiple phone number
+SELECT 
+PRSN_IK,
+NAME,
+AGE,
+MRN_NB
+FROM PRSN
+WHERE PRSN_IK BETWEEN 1 AND 5
+
+
+
+
+
+
+
+

@@ -1,0 +1,122 @@
+----UAT TESTING
+
+DROP TABLE IF EXISTS HEALTH_FACILITY_LOCATION
+CREATE TABLE HEALTH_FACILITY_LOCATION (
+    [LICENSED_CERTIFIED] VARCHAR(250) NULL,
+    [FLAG] VARCHAR(250) NULL,
+    [T18_19] VARCHAR(250) NULL,
+    [FACID] VARCHAR(250) NULL,
+    [FAC_STATUS_TYPE_CODE] VARCHAR(250) NULL,
+    [ASPEN_FACID] VARCHAR(250) NULL,
+    [CCN] VARCHAR(250) NULL,
+    [TERMINAT_SW] VARCHAR(250) NULL,
+    [PARTICIPATION_DATE] VARCHAR(250) NULL,
+    [APPROVAL_DATE] VARCHAR(250) NULL,
+    [NPI] VARCHAR(250) NULL,
+    [CAN_BE_DEEMED_FAC_TYPE] VARCHAR(250) NULL,
+    [CAN_BE_CERTIFIED_FAC_TYPE] VARCHAR(250) NULL,
+    [DEEMED] VARCHAR(250) NULL,
+    [AO_CD] VARCHAR(250) NULL,
+    [DMG_EFCTV_DT] VARCHAR(250) NULL,
+    [AO_TRMNTN_DT] VARCHAR(250) NULL,
+    [AO_NAME] VARCHAR(250) NULL,
+    [FACNAME] VARCHAR(250) NULL,
+    [FAC_TYPE_CODE] VARCHAR(250) NULL,
+    [FAC_FDR] VARCHAR(250) NULL,
+    [LTC] VARCHAR(250) NULL,
+    [CAPACITY] VARCHAR(250) NULL,
+    [ADDRESS] VARCHAR(250) NULL,
+    [CITY] VARCHAR(250) NULL,
+    [ZIP] VARCHAR(250) NULL,
+    [ZIP9] VARCHAR(250) NULL,
+    [FACADMIN] VARCHAR(250) NULL,
+    [CONTACT_EMAIL] VARCHAR(250) NULL,
+    [CONTACT_FAX] VARCHAR(250) NULL,
+    [CONTACT_PHONE_NUMBER] VARCHAR(250) NULL,
+    [COUNTY_CODE] VARCHAR(250) NULL,
+    [COUNTY_NAME] VARCHAR(250) NULL,
+    [DISTRICT_NUMBER] VARCHAR(250) NULL,
+    [DISTRICT_NAME] VARCHAR(250) NULL,
+    [ISFACMAIN] VARCHAR(250) NULL,
+    [PARENT_FACID] VARCHAR(250) NULL,
+    [FAC_FAC_RELATIONSHIP_TYPE_CODE] VARCHAR(250) NULL,
+    [START_DATE] VARCHAR(250) NULL,
+    [LICENSE_NUMBER] VARCHAR(250) NULL,
+    [BUSINESS_NAME] VARCHAR(250) NULL,
+    [LICENSE_STATUS_DESCRIPTION] VARCHAR(250) NULL,
+    [INITIAL_LICENSE_DATE] VARCHAR(250) NULL,
+    [LICENSE_EFFECTIVE_DATE] VARCHAR(250) NULL,
+    [LICENSE_EXPIRATION_DATE] VARCHAR(250) NULL,
+    [ENTITY_TYPE_DESCRIPTION] VARCHAR(250) NULL,
+    [LATITUDE] VARCHAR(250) NULL,
+    [LONGITUDE] VARCHAR(250) NULL,
+    [LOCATION] VARCHAR(250) NULL,
+    [HCAI_ID] VARCHAR(250) NULL,
+    [CCLHO_CODE] VARCHAR(250) NULL,
+    [CCLHO_NAME] VARCHAR(250) NULL,
+    [FIPS_COUNTY_CODE] VARCHAR(250) NULL,
+    [BIRTHING_FACILITY_FLAG] VARCHAR(250) NULL,
+    [TRAUMA_PED_CTR] VARCHAR(250) NULL,
+    [TRAUMA_CTR] VARCHAR(250) NULL,
+    [TYPE_OF_CARE] VARCHAR(250) NULL,
+    [CRITICAL_ACCESS_HOSPITAL] VARCHAR(250) NULL,
+    [DATA_DATE] VARCHAR(250) NULL,
+    [DMG_EFCTV_DATE] VARCHAR(250) NULL
+)
+
+SELECT *
+FROM HEALTH_FACILITY_LOCATION
+/**
+Project scope:
+1: Load hospital facilities data to database 
+2: Create SQL queries to generate metrics like total counts, number of beds, number of facility type, show county maps for total number of facilities in each county in California 
+
+**/
+
+ --Create SQL queries to generate metrics of number of beds
+SELECT Count(CAPACITY)
+FROM HEALTH_FACILITY_LOCATION
+
+
+-- Create SQL queries to generate metrics of number of facility type,
+SELECT FAC_FDR, Count(FAC_FDR)AS NumberOfFacilityType
+FROM HEALTH_FACILITY_LOCATION
+GROUP BY FAC_FDR
+ORDER BY FAC_FDR DESC
+
+SELECT FAC_FDR, Count(FAC_FDR)AS NumberOfFacilityType
+FROM HEALTH_FACILITY_LOCATION
+GROUP BY FAC_FDR
+ORDER BY NumberOfFacilityType DESC
+
+ --Create SQL queries to generate metrics to show county and total number of facilities in each county in California 
+
+ SELECT FAC_FDR, CITY, COUNTY_NAME, 
+
+
+/**
+3: Produce a Business intelligence report showing different KPIs
+
+4: See examples of dashboards and reports 
+
+CalHHS Open Data Portal Metrics - California Health and Human Services Open Data Portal
+
+
+Licensed and Certified Health Care Facilities | California Health and Human Services Open GIS
+
+Workbook: CHHS Program Dashboard
+
+Licensed and Certified Health Care Facilities | California Health and Human Services Open GIS
+
+**/
+
+Select Distinct Count (LOCATION) AS TotalCountOfLocations
+FROM HEALTH_FACILITY_LOCATION
+
+
+Select Count (LOCATION) AS TotalCountOfLocations
+FROM HEALTH_FACILITY_LOCATION
+
+
+Select Count (*) AS TotalCountOfLocations
+FROM HEALTH_FACILITY_LOCATION
